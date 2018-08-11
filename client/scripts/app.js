@@ -1,20 +1,26 @@
 // YOUR CODE HERE:
 var app = {
+  friends: [],
   server: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages'
 };
 
-app.init = function(){
-  $('.username').on('click', this.handleUsernameClick());
+app.init = function() {
 
-  $('.submit').on('click', this.handleSubmit());
+  $('.submit').on('click', this.handleSubmit);
+ 
+  $('.clear').on('click', this.clearMessages);
+
+  // $('.fetch').on('click', this.fetch);
 
   this.fetch();
 
+  $('a').on('click', this.handleUsernameClick);
 };
 
 //App Behavior
 
-app.send = function(message){
+
+app.send = function(message) {
   $.ajax({
     // This is the url you should use to communicate with the parse API server.
     url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
@@ -52,28 +58,40 @@ app.fetch = function() {
 
 app.clearMessages = function() {
   $('#chats').empty();
+  console.log('clearing');
 };
 
 app.renderMessage = function(input) {
-  console.log(input[0].results)
+  console.log(input[0].results);
   // console.log(input.results)
   for (var i = 0; i < input[0].results.length; i++) {
-
-    $('#chats').append('<div class="chat">'+input[0].results[i].text+'</div>')
+    $('#chats').append('<a href="#"><span class="username">' + input[0].results[i].username + '</span></a>');
+    $('#chats').append('<div class="chat">' + input[0].results[i].text + '</div>');
   }
 };
 
 app.renderRoom = function(roomName) {
-  $('#roomSelect').append('<div>'+JSON.stringify(roomName)+'</div>');
+  $('#roomSelect').append('<div>' + JSON.stringify(roomName) + '</div>');
 };
 
-$(document).ready(function(){
+$(document).ready(function() {
   app.init();
 });
 
 //Events
 app.handleUsernameClick = function() {
+  //once username is click
+  //push that dom element to our friends array
+  console.log('i was here');
 };
 
 app.handleSubmit = function() {
-}
+  // var text = 
+  var message = {
+    username: 'andrew',
+    text: $('.userInput').val(),
+    roomname: 'gameroom'
+  }
+// console.log(text);
+  app.send(message);
+};
