@@ -1,11 +1,14 @@
 // YOUR CODE HERE:
-var app = {};
+var app = {
+  server: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages'
+};
 
 app.init = function(){
-  // this.fetch();
   $('.username').on('click', this.handleUsernameClick());
 
   $('.submit').on('click', this.handleSubmit());
+
+  this.fetch();
 
 };
 
@@ -30,18 +33,17 @@ app.send = function(message){
 
 app.fetch = function() {
   $.ajax({
-    //url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages' || undefined,
+    url: this.server,
     type: 'GET',
-
-    //data: JSON.stringify(message),
+    data: 'order=-createdAt',
     contentType: 'application/json',
     success: function (data) {
-      console.log(data)
-      console.log('chatterbox: Message sent');
+      // console.log(data)
+      app.renderMessage.call(this, arguments);
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-      console.error('chatterbox: Failed to send message', data);
+      console.error('chatterbox: something bad happened');
     }
   });
 };
@@ -53,7 +55,12 @@ app.clearMessages = function() {
 };
 
 app.renderMessage = function(input) {
-  $('#chats').append('<div>'+JSON.stringify(input)+'</div>');
+  console.log(input[0].results)
+  // console.log(input.results)
+  for (var i = 0; i < input[0].results.length; i++) {
+
+    $('#chats').append('<div class="chat">'+input[0].results[i].text+'</div>')
+  }
 };
 
 app.renderRoom = function(roomName) {
@@ -66,9 +73,7 @@ $(document).ready(function(){
 
 //Events
 app.handleUsernameClick = function() {
-  console.log('hi');
 };
 
 app.handleSubmit = function() {
-  console.log('something');
 }

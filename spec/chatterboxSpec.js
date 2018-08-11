@@ -74,7 +74,11 @@ describe('chatterbox', function() {
       it('should submit a GET request via $.ajax', function(done) {
         app.fetch();
         expect($.ajax.calledOnce).to.be.true;
+        console.log('123')
+        console.log($.ajax.args[0][0])
         ajaxUrl = typeof $.ajax.args[0][0] === 'string' ? $.ajax.args[0][0] : $.ajax.args[0][0].url;
+        console.log(ajaxUrl)
+        console.log(app.server)
         expect(ajaxUrl).to.equal(app.server);
         done();
       });
@@ -94,7 +98,6 @@ describe('chatterbox', function() {
           text: 'Never underestimate the power of the Schwartz!',
           roomname: 'lobby'
         };
-
         app.renderMessage(message);
 
         expect($('#chats').children().length).to.equal(1);
