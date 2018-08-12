@@ -1,11 +1,12 @@
 // YOUR CODE HERE:
 var app = {
   friends: [],
+  username: 'anonymous',
   server: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages'
 };
 
 app.init = function() {
-
+  app.username = window.location.search.slice(10)
   $('.submit').on('click', this.handleSubmit);
  
   $('.clear').on('click', this.clearMessages);
@@ -44,6 +45,8 @@ app.fetch = function() {
     data: 'order=-createdAt',
     contentType: 'application/json',
     success: function (data) {
+      console.log(data)
+      console.dir(data)
       // console.log(data)
       app.renderMessage.call(this, arguments);
     },
@@ -60,10 +63,13 @@ app.clearMessages = function() {
   $('#chats').empty();
   console.log('clearing');
 };
-
+app.escape = function(input) {
+  input.replace()
+};
 app.renderMessage = function(input) {
   console.log(input[0].results);
   // console.log(input.results)
+  
   for (var i = 0; i < input[0].results.length; i++) {
     $('#chats').append('<a href="#"><span class="username">' + input[0].results[i].username + '</span></a>');
     $('#chats').append('<div class="chat">' + input[0].results[i].text + '</div>');
@@ -92,6 +98,5 @@ app.handleSubmit = function() {
     text: $('.userInput').val(),
     roomname: 'gameroom'
   }
-// console.log(text);
   app.send(message);
 };
